@@ -13,28 +13,9 @@ export const Footer = () => {
             width={40}
             className="mr-4 rounded-md"
           />
-          Viet tNam
+          Việt Nam
         </Button>
-        <Button size="lg" variant="ghost" className="w-full">
-          <Image
-            src="/us.svg"
-            alt="US"
-            height={32}
-            width={40}
-            className="mr-4 rounded-md"
-          />
-          United States
-        </Button>
-        <Button size="lg" variant="ghost" className="w-full">
-          <Image
-            src="/kr.svg"
-            alt="KR"
-            height={32}
-            width={40}
-            className="mr-4 rounded-md"
-          />
-          Koera South
-        </Button>
+
         <Button size="lg" variant="ghost" className="w-full">
           <Image
             src="/fr.svg"
@@ -43,7 +24,7 @@ export const Footer = () => {
             width={40}
             className="mr-4 rounded-md"
           />
-          France
+          Français
         </Button>
         <Button size="lg" variant="ghost" className="w-full">
           <Image
@@ -53,7 +34,27 @@ export const Footer = () => {
             width={40}
             className="mr-4 rounded-md"
           />
-          China
+          中国人
+        </Button>
+        <Button size="lg" variant="ghost" className="w-full">
+          <Image
+            src="/kr.svg"
+            alt="FR"
+            height={32}
+            width={40}
+            className="mr-4 rounded-md"
+          />
+          한국인
+        </Button>
+        <Button size="lg" variant="ghost" className="w-full">
+          <Image
+            src="/us.svg"
+            alt="CN"
+            height={32}
+            width={40}
+            className="mr-4 rounded-md"
+          />
+          English
         </Button>
       </div>
     </div>
