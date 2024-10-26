@@ -20,16 +20,16 @@ const LearnPage = async () => {
       <StickyWrapper>
         {/* Hiển thị tên khoá và nút back lại */}
         <UserProgress
-          activeCourse={{ title: "English", imageSrc: "/us.svg" }}
-          hearts={5}
-          points={100}
+          activeCourse={userProgress.activeCourse}
+          hearts={userProgress.hearts}
+          points={userProgress.points}
           hasActiveSubscription={false}
         />
       </StickyWrapper>
       {/* Giao diện bên phải */}
       <FeedWrapper>
         {/* Hiển thị cờ khoá học, ponit, heart */}
-        <Header title="English" />
+        <Header title={userProgress.activeCourse.title} />
       </FeedWrapper>
     </div>
   );
