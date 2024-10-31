@@ -51,14 +51,17 @@ const main = async () => {
         id: 1,
         courseId: 1,
         title: "Unit 1",
-        description: "Learn the basics of Spaninh",
+        description: "Learn the basics of English",
         order: 1,
       },
     ]);
 
-    await db
-      .insert(schema.lessons)
-      .values([{ id: 1, unitId: 1, order: 1, title: "Nous" }]);
+    await db.insert(schema.lessons).values([
+      { id: 1, unitId: 1, order: 1, title: "Nous" },
+      { id: 2, unitId: 1, order: 2, title: "Verb" },
+      { id: 3, unitId: 1, order: 3, title: "Adverb" },
+      { id: 4, unitId: 1, order: 4, title: "Adjective" },
+    ]);
 
     await db.insert(schema.challenges).values([
       {
@@ -66,6 +69,13 @@ const main = async () => {
         lessonId: 1, //Nouns
         type: "SELECT",
         order: 1,
+        question: 'Which one of these is the "man"?',
+      },
+      {
+        id: 2,
+        lessonId: 1, //Nouns
+        type: "SELECT",
+        order: 2,
         question: 'Which one of these is the "man"?',
       },
     ]);

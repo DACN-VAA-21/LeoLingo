@@ -2,7 +2,13 @@ import { cache } from "react";
 import db from "@/db/drizzle";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { challenges, courses, units, userProgress } from "@/db/schema";
+import {
+  challengeProgress,
+  challenges,
+  courses,
+  units,
+  userProgress,
+} from "@/db/schema";
 
 //truy van chứa tiến trình của người dùng cùng với khóa học mà họ đang tham gia.
 export const getUserProgress = cache(async () => {
@@ -21,10 +27,11 @@ export const getUserProgress = cache(async () => {
   return data;
 });
 
+//TODO: se duoc cap nhat neu sai xot
 export const getUnits = cache(async () => {
   const userProgress = await getUserProgress();
-
-  if (!userProgress?.activeCourseId) {
+  const { userId } = await auth();
+  if (!userId || !userProgress?.activeCourseId) {
     return [];
   }
 
@@ -34,7 +41,11 @@ export const getUnits = cache(async () => {
       lessons: {
         with: {
           challenges: {
-            with: { challengeProgress: true },
+            with: {
+              challengeProgress: {
+                where: eq(challengeProgress.userId, userId),
+              },
+            },
           },
         },
       },
