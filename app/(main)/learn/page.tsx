@@ -2,13 +2,17 @@ import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { Header } from "./header";
 import { UserProgress } from "@/components/user-progress";
-import { getUserProgress } from "@/db/queies";
+import { getUnits, getUserProgress } from "@/db/queies";
 import { redirect } from "next/navigation";
 
 const LearnPage = async () => {
+  const unitsData = getUnits();
   const userProgressData = getUserProgress();
 
-  const [userProgress] = await Promise.all([userProgressData]);
+  const [userProgress, units] = await Promise.all([
+    userProgressData,
+    unitsData,
+  ]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -30,6 +34,11 @@ const LearnPage = async () => {
       <FeedWrapper>
         {/* Hiển thị cờ khoá học, ponit, heart */}
         <Header title={userProgress.activeCourse.title} />
+        {units.map((unit) => (
+          <div key={unit.id} className="mb-10">
+            {JSON.stringify(unit)}
+          </div>
+        ))}
       </FeedWrapper>
     </div>
   );

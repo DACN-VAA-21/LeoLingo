@@ -18,7 +18,7 @@ export const courses = pgTable("courses", {
 // Định nghĩa mối quan hệ của bảng khoá học với các bảng khác như user_progress và units
 export const coursesRelations = relations(courses, ({ many }) => ({
   userProgress: many(userProgress), // Một khoá học có thể có nhiều tiến độ người dùng
-  unitRelations: many(units), // Một khoá học có thể có nhiều chương
+  units: many(units), // Một khoá học có thể có nhiều chương
 }));
 
 // Bảng các chương học (units)
@@ -49,6 +49,7 @@ export const lessons = pgTable("lessons", {
   unitId: integer("unit_id")
     .references(() => units.id, { onDelete: "cascade" }) // Khóa ngoại liên kết với bảng units
     .notNull(),
+  order: integer("order").notNull(),
 });
 
 // Định nghĩa mối quan hệ của bảng lessons
