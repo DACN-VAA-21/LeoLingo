@@ -1,11 +1,15 @@
 "use client";
-import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 import { cn } from "@/lib/utils";
-
 import { Button } from "@/components/ui/button";
 import { Check, Crown, Star } from "lucide-react";
 import Link from "next/link";
+
 type Props = {
   id: number;
   index: number;
@@ -21,13 +25,12 @@ export const LessonButton = ({
   totalCount,
   locked,
   current,
-  percentage,
+  percentage = 0,
 }: Props) => {
   const cycleLength = 8;
   const cycleIndex = index % cycleLength;
 
   let indentationLevel;
-
   if (cycleIndex <= 2) {
     indentationLevel = cycleIndex;
   } else if (cycleIndex <= 4) {
@@ -37,13 +40,14 @@ export const LessonButton = ({
   } else {
     indentationLevel = cycleIndex - 8;
   }
+
   const rightPosition = indentationLevel * 40;
   const isFirst = index === 0;
   const isLast = index === totalCount;
   const isCompleted = !current && !locked;
   const Icon = isCompleted ? Check : isLast ? Crown : Star;
-
   const href = isCompleted ? `/lesson/${id}` : "/lesson";
+
   return (
     <Link
       href={href}
@@ -51,29 +55,28 @@ export const LessonButton = ({
       style={{ pointerEvents: locked ? "none" : "auto" }}
     >
       <div
-        className="relative"
+        className="relative transform transition-transform duration-300 hover:scale-105 hover:translate-y-1"
         style={{
           right: `${rightPosition}px`,
           marginTop: isFirst && !isCompleted ? 60 : 24,
         }}
       >
         {current ? (
-          <div className="h-[102px] w-[102px] relative">
-            <div className="absolute -top-6 left-2.5 px-3 py-2.5 border-2 font-bold uppercase text-green-500 bg-white  rounded-xl animate-bounce tracking-wide z-10">
+          <div className="h-[102px] w-[102px] relative shadow-lg shadow-neutral-500/50">
+            <div className="absolute -top-6 left-2.5 px-3 py-2.5 font-bold uppercase text-green-500 bg-white rounded-xl tracking-wide z-10">
               Start
-              <div className="absolute left-1/2 -bottom-2 w-0 h-0 border-x-8 border-x-transparent border-t-8 transform -translate-x-1/2"></div>
             </div>
             <CircularProgressbarWithChildren
-              value={Number.isNaN(percentage) ? 0 : percentage}
-              styles={{
-                path: { stroke: "#4adc80" },
-                trail: { stroke: "#e5e7eb" },
-              }}
+              value={percentage}
+              styles={buildStyles({
+                pathColor: "#4adc80",
+                trailColor: "#e5e7eb",
+              })}
             >
               <Button
                 size="rounded"
                 variant={locked ? "locked" : "secondary"}
-                className="h-[70px] w-[70px] border-b-8"
+                className="h-[70px] w-[70px] border-b-4 shadow-[inset_0px_0px_6px_rgba(0,0,0,0.3)]"
               >
                 <Icon
                   className={cn(
@@ -91,7 +94,7 @@ export const LessonButton = ({
           <Button
             size="rounded"
             variant={locked ? "locked" : "secondary"}
-            className="h-[70px] w-[70px] border-b-8"
+            className="h-[70px] w-[70px] border-b-4 shadow-lg shadow-neutral-500/50 hover:shadow-neutral-600/70"
           >
             <Icon
               className={cn(
