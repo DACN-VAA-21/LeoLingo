@@ -54,7 +54,7 @@ export const lessons = pgTable("lessons", {
 
 // Định nghĩa mối quan hệ của bảng lessons
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
-  units: one(units, {
+  unit: one(units, {
     // Một bài học thuộc một chương
     fields: [lessons.unitId],
     references: [units.id],
