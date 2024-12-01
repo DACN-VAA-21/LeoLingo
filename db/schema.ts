@@ -118,7 +118,6 @@ export const challengeProgress = pgTable("challenge_progress", {
   challengeId: integer("challenge_id")
     .references(() => challenges.id, { onDelete: "cascade" }) // Khóa ngoại liên kết với bảng challenges
     .notNull(),
-  text: text("text").notNull(), // Câu trả lời của người dùng
   completed: boolean("completed").notNull().default(false), // Trạng thái hoàn thành
 });
 
