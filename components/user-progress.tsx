@@ -5,7 +5,7 @@ import { InfinityIcon } from "lucide-react";
 import { courses } from "@/db/schema";
 
 type Props = {
-  activeCourse: typeof courses.$inferSelect; // TODO: Se thay the voi Database sau nay
+  activeCourse: typeof courses.$inferSelect;
   hearts: number;
   points: number;
   hasActiveSubscription: boolean;

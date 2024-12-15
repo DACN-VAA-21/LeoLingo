@@ -1,7 +1,7 @@
 "use client";
 
 // Quiz.tsx
-import { challengeOptions, challenges } from "@/db/schema";
+import { challengeOptions, challenges, userSubscription } from "@/db/schema";
 import { Header } from "./header";
 import { useState, useTransition } from "react";
 import { QuestionBubble } from "./question-bubble";
@@ -25,7 +25,9 @@ type Props = {
     completed: boolean;
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
-  userSubscription: any;
+  userSubscription:
+    | (typeof userSubscription.$inferSelect & { isActive: boolean })
+    | null;
 };
 
 export const Quiz = ({
@@ -133,7 +135,6 @@ export const Quiz = ({
       });
     }
   };
-  //TODO: Remove true
   if (!challenge) {
     return (
       <>
