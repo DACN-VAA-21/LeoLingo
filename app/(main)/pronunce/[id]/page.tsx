@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { getPhonemeById } from "@/db/queies";
 
 const SpeechRecognition =
   typeof window !== "undefined"
@@ -9,10 +10,11 @@ const SpeechRecognition =
 
 interface Phoneme {
   id: number;
+  word: string;
   symbol: string;
-  example: string;
-  audioUrl: string;
-  lang: string; // Ngôn ngữ của từ
+  example_word: string;
+  audio_url: string;
+  lang: string | null; // Ngôn ngữ của từ
 }
 
 export default function PhonemePage() {
@@ -56,7 +58,7 @@ export default function PhonemePage() {
     async function fetchPhoneme() {
       try {
         setLoading(true);
-        const response = await fetch(`/api/pronunciations/${id}`);
+        const response = await fetch(`/api/phoneme/${id}`);
         if (!response.ok) throw new Error("Phoneme not found");
 
         const data = await response.json();
@@ -119,7 +121,7 @@ export default function PhonemePage() {
       }
     
       const userSpeech = normalizeString(event.results[0][0].transcript);
-      const correctAnswer = normalizeString(phoneme?.example || "");
+      const correctAnswer = normalizeString(phoneme?.example_word || "");
       const calculatedAccuracy = calculateAccuracy(userSpeech, correctAnswer);
     
       setStopTimer(true);
@@ -182,9 +184,9 @@ export default function PhonemePage() {
   const handleNext = async () => {
     if (phoneme) {
       try {
-        const sentences = await fetchSentences(phoneme.example);
+        const sentences = await fetchSentences(phoneme.example_word);
         if (sentences.length > 0) {
-          setPhoneme({ ...phoneme, example: sentences[0] });
+          setPhoneme({ ...phoneme, example_word: sentences[0] });
           setFeedbackMessage(null); // Xóa thông báo
           setIsRecording(false); // Dừng ghi âm
           setTimerExpired(false); // Đặt lại trạng thái hết giờ
@@ -262,8 +264,8 @@ export default function PhonemePage() {
           <button
             className="bg-gray-200 text-black px-10 py-4 rounded-lg hover:scale-105 transition-transform"
             onClick={() => {
-              if (phoneme?.audioUrl) {
-                const audio = new Audio(phoneme.audioUrl);
+              if (phoneme?.audio_url) {
+                const audio = new Audio(phoneme.audio_url);
                 audio.play().catch((err) => console.error("Lỗi phát âm thanh:", err));
               } else {
                 alert("Không tìm thấy âm thanh của từ này!");
@@ -277,8 +279,8 @@ export default function PhonemePage() {
           <button
             className="bg-gray-200 text-black px-10 py-4 rounded-lg hover:scale-105 transition-transform"
             onClick={() => {
-              if (phoneme?.example) {
-                const utterance = new SpeechSynthesisUtterance(phoneme.example);
+              if (phoneme?.example_word) {
+                const utterance = new SpeechSynthesisUtterance(phoneme.example_word);
                 utterance.lang = phoneme.lang || "en-US";
                 utterance.rate = 0.6;
                 window.speechSynthesis.speak(utterance);
@@ -294,8 +296,8 @@ export default function PhonemePage() {
         {/* Phần hiển thị từ hoặc câu */}
         {phoneme && (
           <>
-            <p className="text-gray-500 text-3xl font-bold">{phoneme.example}</p>
-            <p className="text-gray-400 text-xl">/{phoneme.symbol}/</p>
+            <p className="text-gray-500 text-3xl font-bold">{phoneme.example_word}</p>
+            <p className="text-gray-400 text-xl">{phoneme.word}</p>
           </>
         )}
       </div>
@@ -370,5 +372,4 @@ export default function PhonemePage() {
       )}
     </div>
   );
-  
-}
+};

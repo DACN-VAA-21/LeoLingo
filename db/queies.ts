@@ -288,3 +288,47 @@ export const getConsonants = async () => {
   });
   return data;
 };
+
+
+//===================
+export const getPhonemeById = cache(async (id: number) => {
+  const data = await db.query.phonemes.findFirst({
+    where: eq(phonemes.id, id), // Tìm theo ID của phoneme
+    columns: {
+      id: true,
+      symbol: true,
+      description: true,
+      audio_url: true,
+      example_word: true,
+    },
+  });
+  return data;
+});
+
+
+export const getPhonemeWithWordById = cache(async (id: number) => {
+  const data = await db.query.phonemes.findFirst({
+    where: eq(phonemes.id, id),
+    with: {
+      vocabularies: true, // Join với bảng vocabulary
+    },
+    columns: {
+      id: true,
+      description: true,
+      audio_url: true,
+      example_word: true,
+    },
+  });
+
+  if (data) {
+    return {
+      id: data.id,
+      word: data.vocabularies[0]?.word || "No word available", 
+      description: data.description,
+      audio_url: data.audio_url,
+      example_word: data.example_word,
+    };
+  }
+
+  return null; 
+});
