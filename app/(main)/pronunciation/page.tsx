@@ -1,4 +1,8 @@
-import { getCourses, getUserProgress, getPhonemesByCourseId } from "@/db/queies"; // Nhập các hàm truy vấn
+import {
+  getCourses,
+  getUserProgress,
+  getPhonemesByCourseId,
+} from "@/db/queies"; // Nhập các hàm truy vấn
 import { List } from "./list"; // Component hiển thị danh sách phonemes
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -21,11 +25,15 @@ const PronunciationPage = async () => {
     : []; // Nếu không có activeCourseId thì trả về mảng trống
 
   // Tách phonemes thành hai danh sách: vowel và consonant
-  const vowels = phonemesData.filter((phoneme) => phoneme.description?.toLowerCase().includes("vowel"));
-  const consonants = phonemesData.filter((phoneme) => phoneme.description?.toLowerCase().includes("consonant"));
+  const vowels = phonemesData.filter((phoneme) =>
+    phoneme.description?.toLowerCase().includes("vowel")
+  );
+  const consonants = phonemesData.filter((phoneme) =>
+    phoneme.description?.toLowerCase().includes("consonant")
+  );
 
   return (
-    <div className="h-full max-w-[912px] px-4 mx-auto bg-gradient-to-t from-green-100 to-blue-50 rounded-xl shadow-xl">
+    <div className="h-full max-w-[912px] px-4 mx-auto  rounded-xl shadow-xl">
       {/* Tiêu đề */}
       <h1 className="text-4xl font-bold text-center text-yellow-400 my-6">
         Let's learn pronunciation with Leolingo!
@@ -46,7 +54,8 @@ const PronunciationPage = async () => {
       {/* Danh sách consonant */}
       <section>
         <h2 className="text-2xl font-semibold text-black mb-4">Consonants</h2>
-        <List phonemes={consonants} /> {/* Hiển thị danh sách consonant phonemes */}
+        <List phonemes={consonants} />{" "}
+        {/* Hiển thị danh sách consonant phonemes */}
       </section>
     </div>
   );

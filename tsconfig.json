@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/(main)/translate/components/inputs/textArea.jsx",
-    "lib/rtfToText.js"
+    "lib/rtfToText.js",
+    "lib/global.d.ts"
   ],
   "exclude": ["node_modules"]
 }

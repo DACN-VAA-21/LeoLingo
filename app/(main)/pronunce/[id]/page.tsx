@@ -35,13 +35,18 @@ export default function PhonemePage() {
 
   // Hàm chuẩn hóa chuỗi
   const normalizeString = (str: string) =>
-    str.trim().toLowerCase().replace(/[^a-z0-9\s]/g, "");
+    str
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "");
 
   // Tính tỷ lệ giống nhau giữa hai chuỗi
   const calculateAccuracy = (input: string, target: string) => {
     const inputWords = input.split(" ");
     const targetWords = target.split(" ");
-    const matchingWords = inputWords.filter((word) => targetWords.includes(word));
+    const matchingWords = inputWords.filter((word) =>
+      targetWords.includes(word)
+    );
     const percentage = Math.min(
       Math.round((matchingWords.length / targetWords.length) * 100),
       100 // Giới hạn tối đa là 100%
@@ -78,7 +83,7 @@ export default function PhonemePage() {
   // Đếm ngược
   useEffect(() => {
     if (isRecording || timerExpired || stopTimer || timeLeft === 0) return;
-  
+
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev === 1) {
@@ -90,12 +95,17 @@ export default function PhonemePage() {
         return prev - 1;
       });
     }, 1000);
-  
+
     return () => clearInterval(timer);
   }, [timeLeft, isRecording, timerExpired, stopTimer]);
 
   useEffect(() => {
-    if (accuracy !== null && feedbackMessage && accuracy >= 70 && progress < 100) {
+    if (
+      accuracy !== null &&
+      feedbackMessage &&
+      accuracy >= 70 &&
+      progress < 100
+    ) {
       setFeedbackMessage("Xuất sắc");
     }
   }, [accuracy, progress, feedbackMessage]);
@@ -103,7 +113,9 @@ export default function PhonemePage() {
   // Xử lý ghi âm
   const handleMicrophoneClick = () => {
     if (!SpeechRecognition) {
-      setFeedbackMessage("Trình duyệt của bạn không hỗ trợ nhận diện giọng nói.");
+      setFeedbackMessage(
+        "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói."
+      );
       return;
     }
 
@@ -117,14 +129,14 @@ export default function PhonemePage() {
         setIsRecording(false);
         return;
       }
-    
+
       const userSpeech = normalizeString(event.results[0][0].transcript);
       const correctAnswer = normalizeString(phoneme?.example || "");
       const calculatedAccuracy = calculateAccuracy(userSpeech, correctAnswer);
-    
+
       setStopTimer(true);
       setAccuracy(calculatedAccuracy);
-    
+
       if (calculatedAccuracy >= 70) {
         setProgress((prev) => Math.min(prev + 50, 100)); // Cập nhật thanh tiến trình
         setFeedbackMessage("Xuất sắc");
@@ -170,7 +182,7 @@ export default function PhonemePage() {
     try {
       const response = await fetch(`/api/sentences/${word}`);
       if (!response.ok) throw new Error("Error fetching sentences");
-  
+
       const data = await response.json();
       return data.sentences.slice(0, 1); // Trả về câu đầu tiên
     } catch (error) {
@@ -200,16 +212,29 @@ export default function PhonemePage() {
       }
     }
   };
-  
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen text-xl">Loading...</div>;
-  if (error) return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-xl">
+        Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        {error}
+      </div>
+    );
 
   if (isComplete) {
     return (
       <div className="flex flex-col items-center bg-gray-100 min-h-screen p-6">
-        <h1 className="text-4xl font-bold text-green-600 mb-4">🎉 Chúc mừng bạn! 🎉</h1>
-        <p className="text-xl text-gray-700">Bạn đã hoàn thành bài phát âm với kết quả xuất sắc.</p>
+        <h1 className="text-4xl font-bold text-green-600 mb-4">
+          🎉 Chúc mừng bạn! 🎉
+        </h1>
+        <p className="text-xl text-gray-700">
+          Bạn đã hoàn thành bài phát âm với kết quả xuất sắc.
+        </p>
         <div className="flex gap-4 mt-6">
           <button
             onClick={() => router.push("/pronunciation")}
@@ -217,7 +242,6 @@ export default function PhonemePage() {
           >
             Quay lại danh sách bài tập
           </button>
-          
         </div>
       </div>
     );
@@ -234,10 +258,12 @@ export default function PhonemePage() {
         >
           X
         </button>
-  
+
         {/* Hiển thị mức độ phần trăm bài làm */}
-        <p className="text-xl font-bold text-gray-600">{progress.toFixed(0)}%</p>
-  
+        <p className="text-xl font-bold text-gray-600">
+          {progress.toFixed(0)}%
+        </p>
+
         {/* Thanh progress */}
         <div className="relative w-full h-4 bg-gray-300 rounded-full top-[-0.5rem]">
           <div
@@ -246,7 +272,7 @@ export default function PhonemePage() {
           ></div>
         </div>
       </div>
-  
+
       {/* Nội dung chính */}
       <div className="text-center space-y-6 top-[-3rem]">
         <p className="text-gray-700 text-lg font-medium">HÃY NÓI CỤM SAU</p>
@@ -255,7 +281,7 @@ export default function PhonemePage() {
         ) : (
           <p className="text-6xl font-bold text-yellow-500">{timeLeft}</p>
         )}
-  
+
         {/* Các nút chức năng */}
         <div className="flex justify-center gap-4">
           {/* Nút Volume */}
@@ -264,15 +290,17 @@ export default function PhonemePage() {
             onClick={() => {
               if (phoneme?.audioUrl) {
                 const audio = new Audio(phoneme.audioUrl);
-                audio.play().catch((err) => console.error("Lỗi phát âm thanh:", err));
+                audio
+                  .play()
+                  .catch((err) => console.error("Lỗi phát âm thanh:", err));
               } else {
                 alert("Không tìm thấy âm thanh của từ này!");
               }
             }}
           >
-            <span className="text-3xl">🔊</span> 
+            <span className="text-3xl">🔊</span>
           </button>
-  
+
           {/* Nút Slow */}
           <button
             className="bg-gray-200 text-black px-10 py-4 rounded-lg hover:scale-105 transition-transform"
@@ -287,19 +315,21 @@ export default function PhonemePage() {
               }
             }}
           >
-           <span className="text-3xl">🐌</span>
+            <span className="text-3xl">🐌</span>
           </button>
         </div>
-  
+
         {/* Phần hiển thị từ hoặc câu */}
         {phoneme && (
           <>
-            <p className="text-gray-500 text-3xl font-bold">{phoneme.example}</p>
+            <p className="text-gray-500 text-3xl font-bold">
+              {phoneme.example}
+            </p>
             <p className="text-gray-400 text-xl">/{phoneme.symbol}/</p>
           </>
         )}
       </div>
-  
+
       {/* Thông báo kết quả */}
       {feedbackMessage && (
         <div
@@ -310,17 +340,20 @@ export default function PhonemePage() {
           }`}
         >
           <p className="font-bold">{feedbackMessage}</p>
-  
+
           {/* Nút Next */}
-          {accuracy !== null && accuracy >= 70 && feedbackMessage === "Xuất sắc" && progress < 100 && (
-            <button
-              onClick={handleNext}
-              className="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
-            >
-              Next
-            </button>
-          )}
-  
+          {accuracy !== null &&
+            accuracy >= 70 &&
+            feedbackMessage === "Xuất sắc" &&
+            progress < 100 && (
+              <button
+                onClick={handleNext}
+                className="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
+              >
+                Next
+              </button>
+            )}
+
           {/* Nút Retry */}
           {accuracy !== null && accuracy < 70 && (
             <button
@@ -328,21 +361,20 @@ export default function PhonemePage() {
               className="mt-2 bg-blue-500 text-white text-x2 px-8 py-3 rounded-lg hover:bg-blue-600"
             >
               Thử lại
-          </button>
+            </button>
           )}
 
           {timerExpired && (
-             <button
-                onClick={handleRetry}
-                className="mt-2 bg-blue-500 text-white text-xl px-8 py-3 rounded-lg hover:bg-blue-600"
-              >
-                Thử lại
-           </button>
+            <button
+              onClick={handleRetry}
+              className="mt-2 bg-blue-500 text-white text-xl px-8 py-3 rounded-lg hover:bg-blue-600"
+            >
+              Thử lại
+            </button>
           )}
-
         </div>
       )}
-  
+
       {/* Nút Micro */}
       {!timerExpired && (
         <button
@@ -359,16 +391,11 @@ export default function PhonemePage() {
             fill="white"
             className="w-8 h-8"
           >
-            <path
-              d="M12 1.5a3 3 0 00-3 3v7a3 3 0 006 0v-7a3 3 0 00-3-3zm0 13.5a5.002 5.002 0 004.898-4H17a1 1 0 100-2h-2.172a5.002 5.002 0 00-7.656 0H5a1 1 0 100 2h.102A5.002 5.002 0 0012 15z"
-            />
-            <path
-              d="M5.454 12.37a1 1 0 10-1.908.55A8.002 8.002 0 0012 20.25V23h-3a1 1 0 000 2h6a1 1 0 100-2h-3v-2.75a8.002 8.002 0 008.454-7.33 1 1 0 00-1.908-.55A6.002 6.002 0 0112 18a6.002 6.002 0 01-6.546-5.63z"
-            />
+            <path d="M12 1.5a3 3 0 00-3 3v7a3 3 0 006 0v-7a3 3 0 00-3-3zm0 13.5a5.002 5.002 0 004.898-4H17a1 1 0 100-2h-2.172a5.002 5.002 0 00-7.656 0H5a1 1 0 100 2h.102A5.002 5.002 0 0012 15z" />
+            <path d="M5.454 12.37a1 1 0 10-1.908.55A8.002 8.002 0 0012 20.25V23h-3a1 1 0 000 2h6a1 1 0 100-2h-3v-2.75a8.002 8.002 0 008.454-7.33 1 1 0 00-1.908-.55A6.002 6.002 0 0112 18a6.002 6.002 0 01-6.546-5.63z" />
           </svg>
         </button>
       )}
     </div>
   );
-  
 }
