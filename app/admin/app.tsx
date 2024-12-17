@@ -17,6 +17,12 @@ import { ChallengeEdit } from "./challenge/edit";
 import { challengeOptionList } from "./challengeOption/list";
 import { challengeOptionCreate } from "./challengeOption/create";
 import { challengeOptionEdit } from "./challengeOption/edit";
+import { PronunList } from "./pronunciation/list";
+import { PronunCreate } from "./pronunciation/create";
+import { PronunEdit } from "./pronunciation/edit";
+import { VocabularyList } from "./vocaubulary/list";
+import { VocaubularyCreate } from "./vocaubulary/create";
+import { VocabularyEdit } from "./vocaubulary/edit";
 const dataProvider = simpleRestProvider("/api");
 const App = () => {
   return (
@@ -56,6 +62,20 @@ const App = () => {
         edit={challengeOptionEdit}
         recordRepresentation="text"
         options={{ label: "Challenge Options" }}
+      />
+      <Resource
+        name="phonemes"
+        list={PronunList}
+        create={PronunCreate}
+        edit={PronunEdit}
+        recordRepresentation="text"
+      />
+      <Resource
+        name="vocabulary"
+        list={VocabularyList}
+        create={VocaubularyCreate}
+        edit={VocabularyEdit}
+        recordRepresentation="text"
       />
     </Admin>
   );
