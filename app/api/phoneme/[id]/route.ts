@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { getPhonemeWithWordById } from "@/db/queies";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   const phonemeId = Number(params.id);
 
   if (isNaN(phonemeId)) {

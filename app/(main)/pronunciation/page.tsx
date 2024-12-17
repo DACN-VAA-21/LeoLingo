@@ -4,8 +4,6 @@ import {
   getPhonemesByCourseId,
 } from "@/db/queies"; // Nhập các hàm truy vấn
 import { List } from "./list"; // Component hiển thị danh sách phonemes
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 const PronunciationPage = async () => {
   // Lấy danh sách các khóa học
@@ -33,30 +31,51 @@ const PronunciationPage = async () => {
   );
 
   return (
-    <div className="h-full max-w-[912px] px-4 mx-auto  rounded-xl shadow-xl">
-      {/* Tiêu đề */}
-      <h1 className="text-4xl font-bold text-center text-yellow-400 my-6">
-        Let's learn pronunciation with Leolingo!
-      </h1>
+    <div className="relative min-h-screen bg-cover bg-center">
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-50 via-cyan-50 to-white"></div>
 
-      {/* Đường gạch ngang giữa tiêu đề và danh sách vowel */}
-      <hr className="my-6 border-t-2 border-gray-300" />
+      {/* Nội dung chính */}
+      <div className="relative z-10 max-w-[960px] mx-auto py-8 px-6 md:px-8 lg:px-10 xl:px-12 rounded-xl shadow-2xl bg-white/80 border border-green-300">
+        {/* Tiêu đề */}
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center text-green-700 mb-6 drop-shadow-lg">
+          🌱 Welcome to Pronunciation Playground! 🎶
+        </h1>
 
-      {/* Danh sách vowel */}
-      <section className="my-6">
-        <h2 className="text-2xl font-semibold text-black mb-4">Vowels</h2>
-        <List phonemes={vowels} /> {/* Hiển thị danh sách vowel phonemes */}
-      </section>
+        {/* Cartoon hình minh họa */}
+        <div className="text-center">
+          <img
+            src="/cartoon-character.png"
+            alt="Cartoon character"
+            className="mx-auto w-40 h-40 md:w-48 md:h-48 mb-6 animate-spin-slow"
+          />
+        </div>
 
-      {/* Đường gạch ngang giữa vowel và consonant */}
-      <hr className="my-6 border-t-2 border-gray-300" />
+        {/* Danh sách vowels */}
+        <section className="my-8 p-6 rounded-xl bg-green-50 shadow-lg border border-green-200">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4 flex items-center">
+            <span className="bg-green-300 text-green-900 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full mr-3 shadow-sm">
+              🌸
+            </span>
+            Vowels
+          </h2>
+          <List phonemes={vowels} />
+        </section>
 
-      {/* Danh sách consonant */}
-      <section>
-        <h2 className="text-2xl font-semibold text-black mb-4">Consonants</h2>
-        <List phonemes={consonants} />{" "}
-        {/* Hiển thị danh sách consonant phonemes */}
-      </section>
+        {/* Đường gạch ngang sinh động */}
+        <hr className="my-6 border-t-4 border-dotted border-cyan-400" />
+
+        {/* Danh sách consonants */}
+        <section className="my-8 p-6 rounded-xl bg-blue-50 shadow-lg border border-blue-200">
+          <h2 className="text-2xl md:text-3xl font-bold text-blue-800 mb-4 flex items-center">
+            <span className="bg-blue-300 text-blue-900 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full mr-3 shadow-sm">
+              🌟
+            </span>
+            Consonants
+          </h2>
+          <List phonemes={consonants} />
+        </section>
+      </div>
     </div>
   );
 };

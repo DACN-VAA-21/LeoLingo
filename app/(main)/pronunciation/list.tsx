@@ -1,7 +1,7 @@
-"use client"; // Đảm bảo đây là Client Component để sử dụng các hook
+"use client";
 
 import React from "react";
-import { Card } from "./card"; // Nhập component Card
+import { Card } from "./card";
 
 type Phoneme = {
   id: number;
@@ -17,10 +17,13 @@ interface ListProps {
 
 export const List: React.FC<ListProps> = ({ phonemes }) => {
   return (
-    <div className="phoneme-list grid grid-cols-7 gap-7"> {/* Sử dụng grid để tạo layout dạng lưới */}
+    <div className="phoneme-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
       {phonemes.map((phoneme) => (
-        <div key={phoneme.id} className="phoneme-card">
-          <Card phoneme={phoneme} /> {/* Sử dụng Card component */}
+        <div
+          key={phoneme.id}
+          className="phoneme-card transform transition-transform hover:scale-105"
+        >
+          <Card phoneme={phoneme} />
         </div>
       ))}
     </div>
