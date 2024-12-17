@@ -39,6 +39,11 @@ export const Sidebar = ({ className }: Props) => {
           href="/translate"
           iconSrc="/translate.png"
         />
+        <SidebarItem
+          label="pronunciation"
+          href="/pronunciation"
+          iconSrc="/pronunciation.png"
+        />
       </div>
       {/* Them muc nut quan ly nguoi dung de dang ky dang nhap */}
       <div className="p-4">

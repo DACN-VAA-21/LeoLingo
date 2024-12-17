@@ -10,6 +10,7 @@ import {
   units,
   userProgress,
   userSubscription,
+  phonemes,
 } from "@/db/schema";
 
 //truy van chứa tiến trình của người dùng cùng với khóa học mà họ đang tham gia.
@@ -246,3 +247,44 @@ export const getTopTenUsers = cache(async () => {
   });
   return data;
 });
+
+//======================================== Merge code
+// Truy vấn lấy danh sách phiên âm (phonemes) cho khoá học cụ thể
+export const getPhonemesByCourseId = cache(async (courseId: number) => {
+  const data = await db.query.phonemes.findMany({
+    where: eq(phonemes.course_id, courseId),
+    columns: {
+      id: true,
+      description: true,
+      course_id: true,
+      symbol: true,
+      audio_url: true,
+      example_word: true, // Bao gồm cột example_word
+    },
+  });
+  return data;
+});
+
+//Truy vấn tiến trình người dùng để lấy thông tin tiến trình dựa trên userId (đổi tên hàm)
+export const getUserProgressByUserId = cache(async (userId: string) => {
+  const data = await db.query.userProgress.findFirst({
+    where: eq(userProgress.userId,userId),
+  });
+  return data;
+});
+
+// Truy vấn danh sách nguyên âm
+export const getVowels = async () => {
+  const data = await db.query.phonemes.findMany({
+    where: eq(phonemes.description, "vowel"),
+  });
+  return data;
+};
+
+// Truy vấn danh sách phụ âm
+export const getConsonants = async () => {
+  const data = await db.query.phonemes.findMany({
+    where: eq(phonemes.description, "consonant"),
+  });
+  return data;
+};
