@@ -13,6 +13,7 @@
     "db:reset": "tsx ./scripts/reset.ts"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.0.11",
     "@clerk/nextjs": "^5.6.2",
     "@google-cloud/speech": "^6.7.0",
     "@google-cloud/translate": "^8.5.0",
@@ -25,6 +26,7 @@
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tabler/icons-react": "^3.26.0",
+    "ai": "^4.0.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
@@ -47,6 +49,7 @@
     "react-dom": "^18",
     "react-flagpack": "^2.0.6",
     "react-icons": "^5.4.0",
+    "react-markdown": "^9.0.1",
     "react-speech-recognition": "^3.10.0",
     "react-use": "^17.5.1",
     "regenerator-runtime": "^0.14.1",

@@ -24,7 +24,7 @@ export const Sidebar = ({ className }: Props) => {
           </h1>
         </div>
       </Link>
-      <div className="flex flex-col gap-y-8 flex-1 ">
+      <div className="flex flex-col gap-y-2 flex-1 ">
         {/* Code giao dien cho tung item cua thanh sidebar */}
         <SidebarItem label="Learn" href="/learn" iconSrc="/learn.png" />
         <SidebarItem
@@ -43,6 +43,11 @@ export const Sidebar = ({ className }: Props) => {
           label="pronunciation"
           href="/pronunciation"
           iconSrc="/pro.png"
+        />
+        <SidebarItem
+          label="ChatBot AI"
+          href="/chatbot"
+          iconSrc="/chatbot.webp"
         />
       </div>
       {/* Them muc nut quan ly nguoi dung de dang ky dang nhap */}
