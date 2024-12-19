@@ -206,13 +206,14 @@ export default function PhonemePage() {
     setTranscription(null);
   };
 
-  async function fetchSentences(word: string) {
+  async function fetchSentences(phonemeId: number) {
     try {
-      const response = await fetch(`/api/sentences/${word}`);
+      const response = await fetch(`/api/sentences/${phonemeId}`);
       if (!response.ok) throw new Error("Error fetching sentences");
 
       const data = await response.json();
-      return data.sentences.slice(0, 1); // Trả về câu đầu tiên
+      return data.sentences.map((item: { sentence: string }) => item.sentence)[0];
+      //return data.sentences.slice(0, 1); // Trả về câu đầu tiên
     } catch (error) {
       console.error("Error fetching sentences:", error);
       return [];
@@ -222,15 +223,15 @@ export default function PhonemePage() {
   const handleNext = async () => {
     if (phoneme) {
       try {
-        const sentences = await fetchSentences(phoneme.example_word);
-        if (sentences.length > 0) {
-          setPhoneme({ ...phoneme, example_word: sentences[0] });
-          setFeedbackMessage(null); // Xóa thông báo
+        const sentence = await fetchSentences(phoneme.id);
+        if (sentence) {
+          setPhoneme({ ...phoneme, example_word: sentence }); // Cập nhật `example_word` thành câu mới
+          setFeedbackMessage(null); // Xóa thông báo cũ
           setIsRecording(false); // Dừng ghi âm
           setTimerExpired(false); // Đặt lại trạng thái hết giờ
           setStopTimer(false); // Đặt lại trạng thái dừng đếm
           setAccuracy(null); // Reset độ chính xác
-          setTimeLeft(10); // Reset thời gian đếm ngược
+          setTimeLeft(10); // Đặt lại thời gian đếm ngược
           setTranscription(null);
         } else {
           setFeedbackMessage("Không tìm thấy câu liên quan!");
@@ -241,14 +242,38 @@ export default function PhonemePage() {
       }
     }
   };
+
+  // const handleNext = async () => {
+  //   if (phoneme) {
+  //     try {
+  //       const sentences = await fetchSentences(phoneme.id);
+  //       if (sentences.length > 0) {
+  //         setPhoneme({ ...phoneme, example_word: sentences[0] });
+  //         setFeedbackMessage(null); // Xóa thông báo
+  //         setIsRecording(false); // Dừng ghi âm
+  //         setTimerExpired(false); // Đặt lại trạng thái hết giờ
+  //         setStopTimer(false); // Đặt lại trạng thái dừng đếm
+  //         setAccuracy(null); // Reset độ chính xác
+  //         setTimeLeft(10); // Reset thời gian đếm ngược
+  //         setTranscription(null);
+  //       } else {
+  //         setFeedbackMessage("Không tìm thấy câu liên quan!");
+  //       }
+  //     } catch (error) {
+  //       setFeedbackMessage("Lỗi khi lấy dữ liệu từ API. Vui lòng thử lại.");
+  //       console.error("Error:", error);
+  //     }
+  //   }
+  // };
+
   const handleSlowClick = () => {
     if (phoneme?.example_word) {
       const utterance = new SpeechSynthesisUtterance(phoneme.example_word);
       utterance.lang = phoneme.lang || "en-US";
-      utterance.rate = 0.6;
+      utterance.rate = 0.6; // Phát âm chậm hơn bình thường
       window.speechSynthesis.speak(utterance);
     } else {
-      alert("Không tìm thấy từ để đọc!");
+      alert("Không tìm thấy từ hoặc câu để đọc!");
     }
   };
 

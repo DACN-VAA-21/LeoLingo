@@ -11,6 +11,7 @@ import {
   userProgress,
   userSubscription,
   phonemes,
+  sentences,
 } from "@/db/schema";
 
 //truy van chứa tiến trình của người dùng cùng với khóa học mà họ đang tham gia.
@@ -332,3 +333,18 @@ export const getPhonemeWithWordById = cache(async (id: number) => {
 
   return null; 
 });
+
+//======================= Sentences =========================
+//===========================================================
+export const getSentencesByPhonemeId = async (phonemeId: number) => {
+  const data = await db.query.sentences.findMany({
+    where: eq(sentences.phoneme_id, phonemeId),
+    columns: {
+      id: true,
+      sentence: true,
+      sentence_symbol: true,
+    },
+  });
+
+  return data.length > 0 ? data : [];
+};

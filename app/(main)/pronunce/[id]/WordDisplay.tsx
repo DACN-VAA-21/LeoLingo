@@ -14,26 +14,46 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
   exampleWord,
   audioUrl,
   lang,
-  handleSlowClick,
 }) => {
+  // Phát âm với tốc độ tùy chỉnh
+  const playText = (text: string, rate: number) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang || "en-US";
+    utterance.rate = rate; // Thiết lập tốc độ
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Xử lý phát âm với tốc độ bình thường
   const handleVolumeClick = () => {
-    if (audioUrl) {
-      const audio = new Audio(audioUrl);
-      audio.play().catch((err) => console.error("Lỗi phát âm thanh:", err));
+    if (exampleWord) {
+      playText(exampleWord, 1.0); // Phát với tốc độ bình thường
     } else {
-      alert("Không tìm thấy âm thanh của từ này!");
+      alert("Không tìm thấy câu để phát!");
     }
   };
+
+  // Xử lý phát âm với tốc độ chậm
+  const handleSlowClick = () => {
+    if (exampleWord) {
+      playText(exampleWord, 0.3); // Phát với tốc độ chậm
+    } else {
+      alert("Không tìm thấy câu để phát!");
+    }
+  };
+
+  //khai báo
   const containerVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1, transition: { duration: 0.4, ease: "easeInOut" } },
   };
+
   const buttonVariants = {
     initial: { scale: 1 },
     hover: { scale: 1.05, transition: { duration: 0.2 } },
     tap: { scale: 0.95 },
   };
 
+  //thấy return => giao diện
   return (
     <motion.div
       variants={containerVariants}
@@ -43,6 +63,7 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
     >
       <p className="text-gray-700 text-lg font-medium">HÃY NÓI CỤM SAU</p>
       <div className="flex justify-center gap-4">
+        {/* Nút phát âm bình thường */}
         <motion.button
           className="bg-gray-200 text-black px-10 py-4 rounded-2xl hover:scale-105 transition-transform focus:outline-none"
           onClick={handleVolumeClick}
@@ -52,6 +73,7 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
         >
           <span className="text-3xl">🔊</span>
         </motion.button>
+        {/* Nút phát âm chậm */}
         <motion.button
           className="bg-gray-200 text-black px-10 py-4 rounded-2xl hover:scale-105 transition-transform focus:outline-none"
           onClick={handleSlowClick}

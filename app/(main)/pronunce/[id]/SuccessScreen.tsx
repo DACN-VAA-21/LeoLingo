@@ -16,6 +16,7 @@ const SuccessScreen = () => {
     tap: { scale: 0.95 },
   };
 
+  //thấy return => giao diện
   return (
     <motion.div
       variants={containerVariants}

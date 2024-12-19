@@ -1,3 +1,4 @@
+import { Description } from "@radix-ui/react-dialog";
 import { relations } from "drizzle-orm";
 import {
   boolean,
@@ -178,6 +179,24 @@ export const phonemes = pgTable("phonemes", {
   example_word: varchar("example_word", { length: 100 }), // Từ ví dụ
 });
 
+// Bảng sentences
+export const sentences = pgTable("sentences", {
+  id: serial("id").primaryKey(),
+  phoneme_id: integer("phoneme_id")
+    .references(() => phonemes.id)
+    .notNull(), // Khóa ngoại liên kết với bảng phonemes
+  sentence: varchar("sentence", { length: 255 }), // Câu chứa từ vựng
+  sentence_symbol: varchar("sentence_symbol", { length: 255 }), // Ký hiệu phiên âm
+});
+
+// Định nghĩa mối quan hệ của bảng sentences
+export const sentenceRelations = relations(sentences, ({ one }) => ({
+  phoneme: one(phonemes, {
+    fields: [sentences.phoneme_id],
+    references: [phonemes.id],
+  }),
+}));
+
 // Định nghĩa mối quan hệ của bảng phonemes với các bảng khác như courses và vocabulary
 export const phonemesRelations = relations(phonemes, ({ one, many }) => ({
   course: one(courses, {
@@ -185,6 +204,7 @@ export const phonemesRelations = relations(phonemes, ({ one, many }) => ({
     references: [courses.id], // Khoá chính từ bảng courses
   }),
   vocabularies: many(vocabulary), // Một phiên âm có thể liên kết với nhiều từ vựng
+  sentences: many(sentences), // Một từ có thể có nhiều câu liên quan.
 }));
 
 // Bảng vocabulary (liên kết gián tiếp với courses qua phonemes)
