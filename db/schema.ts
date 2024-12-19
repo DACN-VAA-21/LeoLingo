@@ -170,7 +170,9 @@ export const userSubscription = pgTable("user_subscription", {
 export const phonemes = pgTable("phonemes", {
   id: serial("id").primaryKey(), // ID tự động tăng
   description: text("description"), // Mô tả âm vị
-  course_id: integer("course_id").references(() => courses.id).notNull(), // Liên kết với courses
+  course_id: integer("course_id")
+    .references(() => courses.id)
+    .notNull(), // Liên kết với courses
   symbol: varchar("symbol", { length: 10 }).notNull(), // Ký hiệu âm vị
   audio_url: varchar("audio_url", { length: 255 }), // URL âm thanh
   example_word: varchar("example_word", { length: 100 }), // Từ ví dụ
@@ -188,32 +190,19 @@ export const phonemesRelations = relations(phonemes, ({ one, many }) => ({
 // Bảng vocabulary (liên kết gián tiếp với courses qua phonemes)
 export const vocabulary = pgTable("vocabulary", {
   id: serial("id").primaryKey(), // ID tự động tăng
-  course_id: integer("course_id").references(() => courses.id).notNull(), // Liên kết với courses
+  course_id: integer("course_id")
+    .references(() => courses.id)
+    .notNull(), // Liên kết với courses
   word: varchar("word", { length: 50 }).notNull(), // Từ vựng
-  phoneme_id: integer("phoneme_id").references(() => phonemes.id).notNull(), // Liên kết với phonemes
+  phoneme_id: integer("phoneme_id")
+    .references(() => phonemes.id)
+    .notNull(), // Liên kết với phonemes
 });
 
-// Định nghĩa mối quan hệ của bảng vocabulary 
+// Định nghĩa mối quan hệ của bảng vocabulary
 export const vocabularyRelations = relations(vocabulary, ({ one, many }) => ({
   phoneme: one(phonemes, {
     fields: [vocabulary.phoneme_id],
     references: [phonemes.id],
-  }),
-  histories: many(practiceHistory), // Một từ vựng có thể xuất hiện trong nhiều bản ghi lịch sử
-}));
-
-// Bảng practice_history (liên kết với vocabulary)
-export const practiceHistory = pgTable("practice_history", {
-  id: serial("id").primaryKey(), // ID tự động tăng
-  user_id: integer("user_id").notNull(), // ID người dùng (có thể liên kết với bảng users nếu cần)
-  phoneme_id: integer("phoneme_id").references(() => phonemes.id).notNull(), // Liên kết với phonemes
-  practiced_at: timestamp("practiced_at").defaultNow().notNull(), // Thời gian thực hành
-});
-
-// Định nghĩa mối quan hệ của bảng practice_history
-export const practiceHistoryRelations = relations(practiceHistory, ({ one }) => ({
-  phoneme: one(phonemes, {
-    fields: [practiceHistory.phoneme_id], // Trường từ bảng practice_history
-    references: [phonemes.id],           // Trường tham chiếu từ bảng phonemes
   }),
 }));

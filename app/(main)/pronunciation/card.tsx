@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation"; // Import useRouter để điều hướng trang
+import PronunciationModal from "@/components/modals/pronun-modal";
 
 type Phoneme = {
   id: number;
@@ -15,35 +16,6 @@ interface CardProps {
   phoneme: Phoneme;
 }
 
-const PronunciationModal: React.FC<{ onClose: () => void; onConfirm: () => void }> = ({ onClose, onConfirm }) => (
-  <div className="modal-overlay fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
-    <div className="modal-content bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-      <img src="/pronunciation.png" alt="Pronunciation" className="w-30 h-20 mx-auto mb-4" />
-      <p className="text-center text-xl mb-4">
-  <strong>Do you want to learn how to pronounce this word?</strong>
-</p>
-      <div className="flex justify-around">
-      <Button
-              variant="primary"
-              className="w-full"
-              size="lg"
-              onClick={onConfirm}
-            >
-              Yes
-            </Button>
-            <Button
-              variant="primaryOutline"
-              className="w-full"
-              size="lg"
-              onClick={onClose}
-            >
-              No
-            </Button>
-      </div>
-    </div>
-  </div>
-);
-
 export const Card: React.FC<CardProps> = ({ phoneme }) => {
   const router = useRouter(); // Hook để điều hướng trang
   const [showModal, setShowModal] = useState(false); // State để kiểm soát việc hiển thị modal
@@ -52,7 +24,7 @@ export const Card: React.FC<CardProps> = ({ phoneme }) => {
     // Phát âm thanh
     if (phoneme.audio_url) {
       const audio = new Audio(phoneme.audio_url);
-      audio.play();
+      audio.play().catch((err) => console.error("Lỗi phát âm thanh:", err));
       // Mở modal
       setShowModal(true);
     }
@@ -79,10 +51,14 @@ export const Card: React.FC<CardProps> = ({ phoneme }) => {
         }}
       >
         {/* Phiên âm nằm trên */}
-        <p className="text-base font-semibold text-black lowercase">{phoneme.symbol}</p>
+        <p className="text-base font-semibold text-black lowercase">
+          {phoneme.symbol}
+        </p>
         {/* Từ ví dụ nằm dưới */}
         {phoneme.example_word && (
-          <p className="text-sm text-gray-400 lowercase">{phoneme.example_word}</p>
+          <p className="text-sm text-gray-400 lowercase">
+            {phoneme.example_word}
+          </p>
         )}
       </Button>
 
