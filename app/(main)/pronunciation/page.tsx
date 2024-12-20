@@ -13,10 +13,7 @@ const PronunciationPage = async () => {
   const userProgressData = getUserProgress();
 
   // Dùng Promise.all để lấy dữ liệu đồng thời
-  const [courses, userProgress] = await Promise.all([
-    coursesData,
-    userProgressData,
-  ]);
+  const [, userProgress] = await Promise.all([coursesData, userProgressData]);
 
   // Lấy danh sách phonemes theo courseId của khóa học hiện tại
   const phonemesData = userProgress?.activeCourseId
@@ -47,8 +44,10 @@ const PronunciationPage = async () => {
         <div className="text-center">
           <Image
             src="/cartoon-character.png"
+            height={300}
+            width={300}
             alt="Cartoon character"
-            className="mx-auto w-40 h-40 md:w-48 md:h-48 mb-6 animate-spin-slow"
+            className="mx-auto  mb-6 animate-spin-slow"
           />
         </div>
 

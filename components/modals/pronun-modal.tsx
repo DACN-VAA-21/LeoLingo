@@ -33,7 +33,9 @@ const PronunciationModal: React.FC<PronunciationModalProps> = ({
               <Image
                 src="/pronunciation.png"
                 alt="Pronunciation"
-                className="w-20 h-16 mb-4" // Adjusted size
+                height={100}
+                width={100}
+                className=" h-16 mb-4" // Adjusted size
               />
               <p className="text-lg font-medium mb-2">
                 {" "}

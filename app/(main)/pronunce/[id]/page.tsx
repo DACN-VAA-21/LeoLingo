@@ -126,17 +126,17 @@ export default function PhonemePage() {
     recognition.lang = phoneme?.lang || "en-US";
     recognition.interimResults = false;
 
-    recognition.onresult = async (event: any) => {
+    recognition.onresult = async (event: SpeechRecognitionEvent) => {
       if (!event.results || event.results.length === 0) {
         setFeedbackMessage("Không nhận diện được giọng nói");
         setIsRecording(false);
         return;
       }
 
-      const userSpeech = normalizeString(event.results[0][0].transcript);
       const correctAnswer = normalizeString(phoneme?.example_word || "");
+      const transcript = event.results[0][0].transcript;
       const { score, error, transcription } = await analyzeSpeech(
-        new Blob([event.results[0][0].transcript], { type: "text/plain" }),
+        new Blob([transcript], { type: "text/plain" }),
         correctAnswer
       );
 
@@ -144,7 +144,6 @@ export default function PhonemePage() {
       if (error) {
         setFeedbackMessage("Không đúng mất rồi");
         setAccuracy(0);
-        setStopTimer(true);
         return;
       }
       if (score !== null) {
