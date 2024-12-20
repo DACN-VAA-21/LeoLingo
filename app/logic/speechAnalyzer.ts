@@ -9,8 +9,18 @@ export const analyzeSpeech = async (audioBlob: Blob, targetWord: string) => {
     const normalizedTranscription = transcription.trim().toLowerCase();
     const score = normalizedTranscription.includes(normalizedTarget) ? 100 : 0;
     return { score, transcription };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error analyzing speech:", error);
-    return { error: error.message, score: null, transcription: null };
+
+    // Check if the error is an instance of Error to safely access the message
+    if (error instanceof Error) {
+      return { error: error.message, score: null, transcription: null };
+    }
+    // In case the error is not an instance of Error
+    return {
+      error: "An unknown error occurred",
+      score: null,
+      transcription: null,
+    };
   }
 };

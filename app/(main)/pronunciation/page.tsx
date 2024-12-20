@@ -4,6 +4,7 @@ import {
   getPhonemesByCourseId,
 } from "@/db/queies"; // Nhập các hàm truy vấn
 import { List } from "./list"; // Component hiển thị danh sách phonemes
+import Image from "next/image";
 
 const PronunciationPage = async () => {
   // Lấy danh sách các khóa học
@@ -44,7 +45,7 @@ const PronunciationPage = async () => {
 
         {/* Cartoon hình minh họa */}
         <div className="text-center">
-          <img
+          <Image
             src="/cartoon-character.png"
             alt="Cartoon character"
             className="mx-auto w-40 h-40 md:w-48 md:h-48 mb-6 animate-spin-slow"

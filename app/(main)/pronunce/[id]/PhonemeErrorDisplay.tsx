@@ -1,7 +1,11 @@
 import React from "react";
 
+interface Word {
+  word: string;
+}
+
 interface PhonemeErrorDisplayProps {
-  words: any[] | null;
+  words: Word[] | null;
   targetWord: string;
 }
 
@@ -16,7 +20,7 @@ const PhonemeErrorDisplay: React.FC<PhonemeErrorDisplayProps> = ({
   const targetWords = targetWord.split(" ");
 
   // Map over the words, and check if the word is correct by comparing it with the target words. If the word is incorrect, give it a red color, otherwise, give it a green color
-  let output = words.map((word, index) => {
+  const output = words.map((word, index) => {
     const found = targetWords.find(
       (item) => item.toLowerCase() === word.word.toLowerCase()
     );
@@ -24,8 +28,7 @@ const PhonemeErrorDisplay: React.FC<PhonemeErrorDisplayProps> = ({
     const className = isCorrect ? "text-green-600" : "text-red-600";
     return (
       <span key={index} className={className}>
-        {" "}
-        {word.word}{" "}
+        {word.word}
       </span>
     );
   });
