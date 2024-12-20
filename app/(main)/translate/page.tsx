@@ -1,15 +1,8 @@
 "use client";
 import "regenerator-runtime/runtime";
 import React, { ChangeEvent, useState, useEffect } from "react";
-import {
-  IconCopy,
-  IconStar,
-  IconThumbDown,
-  IconThumbUp,
-  IconVolume,
-} from "@tabler/icons-react";
+import { IconCopy, IconStar, IconVolume } from "@tabler/icons-react";
 import TextArea from "./components/Inputs/textArea";
-import FileUpload from "./components/Inputs/FileUpload";
 import useTranslate from "./hooks/useTranslate";
 import LanguageSelector from "./components/Inputs/LanguageSelector";
 import SvgDecorations from "./SvgDecorations";

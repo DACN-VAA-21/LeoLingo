@@ -4,7 +4,6 @@ import {
   List,
   NumberField,
   ReferenceField,
-  SelectField,
   TextField,
 } from "react-admin";
 

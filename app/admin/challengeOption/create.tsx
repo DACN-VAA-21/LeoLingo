@@ -1,10 +1,8 @@
 import {
   BooleanInput,
   Create,
-  NumberInput,
   ReferenceInput,
   required,
-  SelectInput,
   SimpleForm,
   TextInput,
 } from "react-admin";

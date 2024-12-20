@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 interface PronunciationModalProps {
   onClose: () => void;
@@ -29,7 +30,7 @@ const PronunciationModal: React.FC<PronunciationModalProps> = ({
             <div className="flex flex-col items-center">
               {" "}
               {/* Center content */}
-              <img
+              <Image
                 src="/pronunciation.png"
                 alt="Pronunciation"
                 className="w-20 h-16 mb-4" // Adjusted size

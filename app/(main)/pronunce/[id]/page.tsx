@@ -56,18 +56,6 @@ export default function PhonemePage() {
       .replace(/[^a-z0-9\s]/g, "");
 
   // Tính tỷ lệ giống nhau giữa hai chuỗi
-  const calculateAccuracy = (input: string, target: string) => {
-    const inputWords = input.split(" ");
-    const targetWords = target.split(" ");
-    const matchingWords = inputWords.filter((word) =>
-      targetWords.includes(word)
-    );
-    const percentage = Math.min(
-      Math.round((matchingWords.length / targetWords.length) * 100),
-      100 // Giới hạn tối đa là 100%
-    );
-    return percentage;
-  };
 
   // Gọi API lấy phoneme
   useEffect(() => {

@@ -13,7 +13,6 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
   word,
   exampleWord,
   audioUrl,
-  lang,
   handleSlowClick,
 }) => {
   const handleVolumeClick = () => {
