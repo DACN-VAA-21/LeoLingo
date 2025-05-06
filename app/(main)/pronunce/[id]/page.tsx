@@ -232,7 +232,7 @@ export default function PhonemePage() {
     if (phoneme?.example_word) {
       const utterance = new SpeechSynthesisUtterance(phoneme.example_word);
       utterance.lang = phoneme.lang || "en-US";
-      utterance.rate = 0.6;
+      utterance.rate = 0.3;
       window.speechSynthesis.speak(utterance);
     } else {
       alert("Không tìm thấy từ để đọc!");

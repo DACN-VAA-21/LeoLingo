@@ -15,19 +15,12 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHHOK_SECRET!
     );
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return new NextResponse(`Webhook error: ${error.message}`, {
-        status: 400,
-      });
-    }
-    return new NextResponse("Webhook error: Unknown error", { status: 400 });
+  } catch (error: any) {
+    return new NextResponse(`Webhook error: ${error.message}`, { status: 400 });
   }
-
   const session = event.data.object as Stripe.Checkout.Session;
-
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
